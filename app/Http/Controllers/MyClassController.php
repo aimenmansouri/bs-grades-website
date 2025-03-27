@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\my_class;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\User;
 
 class MyClassController extends Controller
 {
@@ -13,7 +14,8 @@ class MyClassController extends Controller
      */
     public function index()
     {
-        return Inertia::render('classes/Classes');
+        $teachers = User::where('role', 2)->get();
+        return Inertia::render('classes/Classes', ["teachers" => $teachers]);
     }
 
     /**
@@ -29,7 +31,23 @@ class MyClassController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:50|unique:my_classes,code',
+            'year' => 'required|integer',
+            'spec' => 'required|string|max:255',
+            'teacherId' => 'required|exists:users,id',
+        ]);
+
+        $my_class = my_class::create([
+            'name' => $validated['name'],
+            'code' => $validated['code'],
+            'year' => $validated['year'],
+            'spec' => $validated['spec'],
+            'teacher_id' => $validated['teacherId'],
+        ]);
+
+        return redirect()->back()->with('success', 'Class added successfully.');
     }
 
     /**

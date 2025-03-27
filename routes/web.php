@@ -14,8 +14,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::get('dashboard/classes', [MyClassController::class, 'index'])->name('dashboard.classes');
-
+    Route::post('dashboard/classes', [MyClassController::class, 'store'])->name('classes.store');
 });
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';

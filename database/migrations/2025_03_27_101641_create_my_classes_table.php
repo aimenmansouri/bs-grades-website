@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('my_classes', function (Blueprint $table) {
             $table->id();
             $table->tinyInteger("year");
-            $table->tinyInteger("spec");
-            $table->tinyInteger("name");
+            $table->string("spec");
+            $table->string("name");
             $table->string("code")->unique();
-            $table->foreignId('teacher_id')->constrained(table:"users")->onDelete('cascade');
+            $table->foreignId('teacher_id')->constrained(table: "users")->onDelete('cascade');
             $table->timestamps();
         });
     }

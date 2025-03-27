@@ -11,5 +11,6 @@ class my_class extends Model
         'spec',
         'name',
         'code',
+        'teacher_id',
     ];
 }
