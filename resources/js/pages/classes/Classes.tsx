@@ -11,6 +11,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Classes',
@@ -26,8 +28,8 @@ type ClassForm = {
     teacherId: number;
 };
 
-export default function Classes({ teachers = [] }) {
-    console.log('Teachers:', teachers);
+export default function Classes({ teachers = [], classes = [] }) {
+    console.log('Classes:', classes);
 
     const { data, setData, post, errors, processing, reset } = useForm<ClassForm>({
         year: '',
@@ -130,6 +132,31 @@ export default function Classes({ teachers = [] }) {
                         </form>
                     </DialogContent>
                 </Dialog>
+                <Table>
+                    <TableCaption>List of available classes and their teachers.</TableCaption>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="w-[50px]">#</TableHead>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Code</TableHead>
+                            <TableHead>Year</TableHead>
+                            <TableHead>Specialization</TableHead>
+                            <TableHead>Teacher</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {classes.map((cls, index) => (
+                            <TableRow key={cls.id}>
+                                <TableCell className="font-medium">{index + 1}</TableCell>
+                                <TableCell>{cls.name}</TableCell>
+                                <TableCell>{cls.code}</TableCell>
+                                <TableCell>{cls.year}</TableCell>
+                                <TableCell>{cls.spec}</TableCell>
+                                <TableCell>{cls.teacher?.name || 'N/A'}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
             </div>
         </AppLayout>
     );

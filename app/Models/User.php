@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -47,13 +48,22 @@ class User extends Authenticatable
         ];
     }
 
-    public function isAdmin() {
+    public function isAdmin()
+    {
         return $this->role == 1;
     }
-    public function isTeacher() {
+    public function isTeacher()
+    {
         return $this->role == 2;
     }
-    public function isStudent() {
+    public function isStudent()
+    {
         return $this->role == 3;
+    }
+
+    //for teachers only
+    public function classes(): HasMany
+    {
+        return $this->hasMany(my_class::class, 'teacher_id');
     }
 }

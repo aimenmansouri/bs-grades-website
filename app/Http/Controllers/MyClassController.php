@@ -15,7 +15,8 @@ class MyClassController extends Controller
     public function index()
     {
         $teachers = User::where('role', 2)->get();
-        return Inertia::render('classes/Classes', ["teachers" => $teachers]);
+        $classes = my_class::with('teacher')->get();
+        return Inertia::render('classes/Classes', ["teachers" => $teachers, "classes" => $classes]);
     }
 
     /**
