@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid , Circle } from 'lucide-react';
+import { BookOpen, Circle, Folder, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -17,6 +17,12 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Classes',
         href: '/dashboard/classes',
+        icon: Circle,
+    },
+
+    {
+        title: 'Students',
+        href: '/dashboard/students',
         icon: Circle,
     },
 ];

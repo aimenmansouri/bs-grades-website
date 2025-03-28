@@ -171,7 +171,7 @@ export default function Classes({ teachers = [], classes = [] }) {
                                 <TableCell>{cls.spec}</TableCell>
                                 <TableCell>{cls.teacher?.name || 'N/A'}</TableCell>
                                 <TableCell>
-                                    <Button onClick={() => deleteClass(cls.id)} className="text-red-500 hover:text-red-700" variant="destructive">
+                                    <Button onClick={() => deleteClass(cls.id)} variant="destructive">
                                         Delete
                                     </Button>
                                 </TableCell>
