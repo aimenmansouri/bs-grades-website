@@ -1,5 +1,5 @@
-import { useForm } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { router, useForm } from '@inertiajs/react';
+import { FormEventHandler, useEffect } from 'react';
 
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -39,6 +38,10 @@ export default function Classes({ teachers = [], classes = [] }) {
         teacherId: teachers.length > 0 ? teachers[0].id : 0,
     });
 
+    useEffect(() => {
+        setData('code', `${data.year}-${data.spec}-${data.name}`);
+    }, [data.year, data.spec, data.name, setData]);
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('classes.store'), {
@@ -47,12 +50,24 @@ export default function Classes({ teachers = [], classes = [] }) {
         reset();
     };
 
+    const deleteClass = (id: number) => {
+        if (!window.confirm('Are you sure you want to delete this class?')) return;
+
+        router.delete(route('classes.destroy', id), {
+            preserveScroll: true,
+            onSuccess: () => console.log('Class deleted successfully'),
+            onError: (errors) => console.error(errors),
+        });
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <Dialog>
-                    <DialogTrigger>Add class</DialogTrigger>
+                    <DialogTrigger>
+                        <Button>Add class</Button>
+                    </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle>Add new class</DialogTitle>
@@ -68,18 +83,6 @@ export default function Classes({ teachers = [], classes = [] }) {
                                     placeholder="Enter class name"
                                 />
                                 <InputError message={errors.name} />
-                            </div>
-
-                            <div>
-                                <Label htmlFor="code">Class Code</Label>
-                                <Input
-                                    id="code"
-                                    value={data.code}
-                                    onChange={(e) => setData('code', e.target.value)}
-                                    required
-                                    placeholder="Enter class code"
-                                />
-                                <InputError message={errors.code} />
                             </div>
 
                             <div>
@@ -105,6 +108,19 @@ export default function Classes({ teachers = [], classes = [] }) {
                                     placeholder="Enter specialization"
                                 />
                                 <InputError message={errors.spec} />
+                            </div>
+
+                            <div>
+                                <Label htmlFor="code">Class Code</Label>
+                                <Input
+                                    disabled
+                                    id="code"
+                                    value={data.code}
+                                    onChange={(e) => setData('code', e.target.value)}
+                                    required
+                                    placeholder="Enter class code"
+                                />
+                                <InputError message={errors.code} />
                             </div>
 
                             <div>
@@ -142,6 +158,7 @@ export default function Classes({ teachers = [], classes = [] }) {
                             <TableHead>Year</TableHead>
                             <TableHead>Specialization</TableHead>
                             <TableHead>Teacher</TableHead>
+                            <TableHead>Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -153,6 +170,11 @@ export default function Classes({ teachers = [], classes = [] }) {
                                 <TableCell>{cls.year}</TableCell>
                                 <TableCell>{cls.spec}</TableCell>
                                 <TableCell>{cls.teacher?.name || 'N/A'}</TableCell>
+                                <TableCell>
+                                    <Button onClick={() => deleteClass(cls.id)} className="text-red-500 hover:text-red-700" variant="destructive">
+                                        Delete
+                                    </Button>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

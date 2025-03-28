@@ -15,6 +15,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('dashboard/classes', [MyClassController::class, 'index'])->name('dashboard.classes');
     Route::post('dashboard/classes', [MyClassController::class, 'store'])->name('classes.store');
+    Route::delete('dashboard/classes/{my_class}', [MyClassController::class, 'destroy'])->name('classes.destroy');
 });
 
 require __DIR__ . '/settings.php';

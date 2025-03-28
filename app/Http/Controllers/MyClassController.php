@@ -80,6 +80,8 @@ class MyClassController extends Controller
      */
     public function destroy(my_class $my_class)
     {
-        //
+        $my_class->delete();
+
+        return redirect()->back()->with(['message' => 'Class deleted successfully']);
     }
 }
