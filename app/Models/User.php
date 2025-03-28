@@ -62,8 +62,13 @@ class User extends Authenticatable
     }
 
     //for teachers only
-    public function classes(): HasMany
+    public function teacherClasses(): HasMany
     {
         return $this->hasMany(my_class::class, 'teacher_id');
+    }
+
+    public function classes()
+    {
+        return $this->belongsToMany(my_class::class, 'student_class', 'user_id', 'my_class_id')->withTimestamps();
     }
 }

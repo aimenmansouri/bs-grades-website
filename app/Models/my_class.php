@@ -19,4 +19,9 @@ class my_class extends Model
     {
         return $this->belongsTo(User::class, 'teacher_id');
     }
+
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'student_class', 'my_class_id', 'user_id')->withTimestamps();
+    }
 }

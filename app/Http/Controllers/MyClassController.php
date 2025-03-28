@@ -84,4 +84,18 @@ class MyClassController extends Controller
 
         return redirect()->back()->with(['message' => 'Class deleted successfully']);
     }
+
+    public function updateStudentClasses(Request $request, $studentId)
+    {
+        $request->validate([
+            'class_ids' => 'array|required',
+            'class_ids.*' => 'exists:my_classes,id'
+        ]);
+
+        $student = User::findOrFail($studentId);
+
+        $student->classes()->sync($request->class_ids);
+
+        return redirect()->back()->with(['message' => 'Student classes updated successfully']);
+    }
 }

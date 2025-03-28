@@ -21,6 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //students
     Route::get('dashboard/students', [UsersController::class, 'StudentsIndex'])->name('dashboard.students');
+    Route::post('dashboard/students/{student}/update-classes', [MyClassController::class, 'updateStudentClasses'])->name('student.update.classes');
 });
 
 require __DIR__ . '/settings.php';

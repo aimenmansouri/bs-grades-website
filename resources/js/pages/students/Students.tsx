@@ -1,10 +1,12 @@
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 
+import { router } from '@inertiajs/react';
+import { useState } from 'react';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Students',
@@ -12,8 +14,27 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Classes({ students = [], classes = [] }) {
-    console.log(students);
+export default function Students({ students = [], classes = [] }) {
+    const [selectedClasses, setSelectedClasses] = useState<Record<number, number[]>>({});
+
+    const handleCheckboxChange = (studentId: number, classId: number) => {
+        setSelectedClasses((prev) => {
+            const updated = { ...prev };
+            if (!updated[studentId]) updated[studentId] = [];
+            if (updated[studentId].includes(classId)) {
+                updated[studentId] = updated[studentId].filter((id) => id !== classId);
+            } else {
+                updated[studentId].push(classId);
+            }
+            return updated;
+        });
+    };
+
+    const handleSubmit = async (studentId: number) => {
+        router.post(route('student.update.classes', studentId), {
+            class_ids: selectedClasses[studentId] || [],
+        });
+    };
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
@@ -41,12 +62,23 @@ export default function Classes({ students = [], classes = [] }) {
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>
-                                                <DialogTitle>Are you absolutely sure?</DialogTitle>
-                                                <DialogDescription>
-                                                    This action cannot be undone. This will permanently delete your account and remove your data from
-                                                    our servers.
-                                                </DialogDescription>
+                                                <DialogTitle>Edit Classes for {student.name}</DialogTitle>
                                             </DialogHeader>
+                                            <div className="flex flex-col gap-2">
+                                                {classes.map((cls) => (
+                                                    <label key={cls.id} className="flex items-center gap-2">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={selectedClasses[student.id]?.includes(cls.id) || false}
+                                                            onChange={() => handleCheckboxChange(student.id, cls.id)}
+                                                        />
+                                                        {cls.name} ({cls.spec} - Year {cls.year})
+                                                    </label>
+                                                ))}
+                                                <Button onClick={() => handleSubmit(student.id)} className="mt-4">
+                                                    Save
+                                                </Button>
+                                            </div>
                                         </DialogContent>
                                     </Dialog>
                                 </TableCell>
