@@ -25,6 +25,12 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard/students',
         icon: Circle,
     },
+
+    {
+        title: 'Grades',
+        href: '/dashboard/grades',
+        icon: Circle,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
