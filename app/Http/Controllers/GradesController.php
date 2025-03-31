@@ -27,7 +27,7 @@ class GradesController extends Controller
             return response()->json(['message' => 'Class not found'], 404);
         }
 
-        dd($class->students);
+        return Inertia::render('grades/Class', ["students" => $class->students]);
     }
 
     /**
