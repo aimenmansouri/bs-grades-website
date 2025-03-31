@@ -6,7 +6,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
- 
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -31,8 +31,27 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
+            'name' => 'Teacher2',
+            'email' => 'teacher2@g.com',
+            'role' => 2, // Teacher
+            'password' => Hash::make('123456'),
+        ]);
+
+        User::create([
             'name' => 'Student',
             'email' => 'student@g.com',
+            'role' => 3, // Student
+            'password' => Hash::make('123456'),
+        ]);
+        User::create([
+            'name' => 'Student3',
+            'email' => 'student3@g.com',
+            'role' => 3, // Student
+            'password' => Hash::make('123456'),
+        ]);
+        User::create([
+            'name' => 'Student2',
+            'email' => 'student2@g.com',
             'role' => 3, // Student
             'password' => Hash::make('123456'),
         ]);

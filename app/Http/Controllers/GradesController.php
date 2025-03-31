@@ -6,6 +6,7 @@ use App\Models\grades;
 use Illuminate\Http\Request;
 use App\Models\my_class;
 use Inertia\Inertia;
+use App\Models\User;
 
 class GradesController extends Controller
 {
@@ -20,7 +21,13 @@ class GradesController extends Controller
 
     public function classIndex($class_code)
     {
-        dd($class_code);
+        $class = my_class::where("code", $class_code)->with('students')->first();
+
+        if (!$class) {
+            return response()->json(['message' => 'Class not found'], 404);
+        }
+
+        dd($class->students);
     }
 
     /**
