@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('grades', function (Blueprint $table) {
             $table->id();
-            $table->string("grade");
-            $table->enum("type",["td" , "exam"]);
-            $table->foreignId('student_id')->constrained(table:"users")->onDelete('cascade');
+            $table->smallInteger("grade");
+            $table->enum("type", ["td", "exam"]);
+            $table->foreignId('student_id')->constrained(table: "users")->onDelete('cascade');
             $table->foreignId('my_class_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

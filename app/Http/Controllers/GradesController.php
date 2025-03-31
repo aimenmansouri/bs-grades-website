@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\grades;
 use Illuminate\Http\Request;
+use App\Models\my_class;
+use Inertia\Inertia;
 
 class GradesController extends Controller
 {
@@ -12,7 +14,13 @@ class GradesController extends Controller
      */
     public function index()
     {
-        //
+        $classes = my_class::orderBy('year')->get()->groupBy('year');
+        return Inertia::render('grades/Classes', ["classes" => $classes]);
+    }
+
+    public function classIndex($class_code)
+    {
+        dd($class_code);
     }
 
     /**

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\MyClassController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\GradesController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -22,6 +23,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //students
     Route::get('dashboard/students', [UsersController::class, 'StudentsIndex'])->name('dashboard.students');
     Route::post('dashboard/students/{student}/update-classes', [MyClassController::class, 'updateStudentClasses'])->name('student.update.classes');
+
+    //grades
+    Route::get('dashboard/grades', [GradesController::class, 'index'])->name('dashboard.grades');
+    Route::get('dashboard/grades/{class_code}', [GradesController::class, 'classIndex'])->name('dashboard.grades.class');
 });
 
 require __DIR__ . '/settings.php';
