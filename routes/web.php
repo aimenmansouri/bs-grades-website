@@ -27,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //grades
     Route::get('dashboard/grades', [GradesController::class, 'index'])->name('dashboard.grades');
     Route::get('dashboard/grades/{class_code}', [GradesController::class, 'classIndex'])->name('dashboard.grades.class');
+    Route::get('dashboard/grades/{class_code}/{studentId}', [GradesController::class, 'studentIndex'])->name('dashboard.grades.student');
 });
 
 require __DIR__ . '/settings.php';

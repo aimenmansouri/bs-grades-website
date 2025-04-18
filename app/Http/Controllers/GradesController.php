@@ -19,6 +19,7 @@ class GradesController extends Controller
         return Inertia::render('grades/Classes', ["classes" => $classes]);
     }
 
+
     public function classIndex($class_code)
     {
         $class = my_class::where("code", $class_code)->with('students')->first();
@@ -27,7 +28,31 @@ class GradesController extends Controller
             return response()->json(['message' => 'Class not found'], 404);
         }
 
-        return Inertia::render('grades/Class', ["students" => $class->students]);
+
+        return Inertia::render('grades/Class', ["students" => $class->students, "classCode" => $class_code]);
+    }
+
+    public function studentIndex($class_code, $studentId)
+    {
+        // Find the class
+        $class = my_class::where('code', $class_code)->firstOrFail();
+
+        // Find the student
+        $student = User::where('id', $studentId)
+            ->where('role', 3) // Role 3 is for students
+            ->firstOrFail();
+
+        // You might want to load grades data for this student
+        // For example:
+        // $grades = Grade::where('student_id', $studentId)
+        //     ->where('class_id', $class->id)
+        //     ->get();
+
+        return Inertia::render('grades/Student', [
+            'student' => $student,
+            'class' => $class,
+            // 'grades' => $grades,
+        ]);
     }
 
     /**
