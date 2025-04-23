@@ -6,6 +6,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
+import { toast } from "sonner"
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -35,7 +36,8 @@ export default function Student({ student, class: classData }: StudentPageProps)
     const [examGrade, setExamGrade] = useState('');
 
     const handleSaveGrades = () => {
-        // Implement API call to save grades
+        toast("Event has been created.")
+
         console.log('Saving grades:', { termGrade, examGrade });
         // You would typically use Inertia.post here to submit to your backend
     };

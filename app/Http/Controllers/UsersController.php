@@ -13,9 +13,12 @@ class UsersController extends Controller
 {
     public function StudentsIndex()
     {
-        $students = User::where('role', 3)->get();
+        $students = User::where('role', 3)->with('classes')->get(); // eager load the 'classes' relationship
         $classes = my_class::all();
 
-        return Inertia::render('students/Students', ["students" => $students, "classes" => $classes]);
+        return Inertia::render('students/Students', [
+            "students" => $students,
+            "classes" => $classes
+        ]);
     }
 }

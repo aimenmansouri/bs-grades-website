@@ -6,7 +6,9 @@ import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 
 import { router } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState , useEffect } from 'react';
+
+import { toast } from 'sonner';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Students',
@@ -16,7 +18,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Students({ students = [], classes = [] }) {
     const [selectedClasses, setSelectedClasses] = useState<Record<number, number[]>>({});
-
+    useEffect(() => {
+        const initialSelected: Record<number, number[]> = {};
+        students.forEach((student) => {
+            initialSelected[student.id] = student.classes.map((cls) => cls.id);
+        });
+        setSelectedClasses(initialSelected);
+    }, [students]);
     const handleCheckboxChange = (studentId: number, classId: number) => {
         setSelectedClasses((prev) => {
             const updated = { ...prev };
@@ -34,6 +42,7 @@ export default function Students({ students = [], classes = [] }) {
         router.post(route('student.update.classes', studentId), {
             class_ids: selectedClasses[studentId] || [],
         });
+        toast("new classes saved.")
     };
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

@@ -88,13 +88,14 @@ class MyClassController extends Controller
     public function updateStudentClasses(Request $request, $studentId)
     {
         $request->validate([
-            'class_ids' => 'array|required',
-            'class_ids.*' => 'exists:my_classes,id'
+            'class_ids' => 'array',
+            'class_ids.*' => 'exists:my_classes,id',
         ]);
-
+        
         $student = User::findOrFail($studentId);
-
+        
         $student->classes()->sync($request->class_ids);
+        dd($request->class_ids);
 
         return redirect()->back()->with(['message' => 'Student classes updated successfully']);
     }
