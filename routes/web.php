@@ -28,6 +28,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard/grades', [GradesController::class, 'index'])->name('dashboard.grades');
     Route::get('dashboard/grades/{class_code}', [GradesController::class, 'classIndex'])->name('dashboard.grades.class');
     Route::get('dashboard/grades/{class_code}/{studentId}', [GradesController::class, 'studentIndex'])->name('dashboard.grades.student');
+    Route::post('dashboard/grades/save', [GradesController::class, 'store'])->name('dashboard.grades.store');
+
 });
 
 require __DIR__ . '/settings.php';

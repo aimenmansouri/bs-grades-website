@@ -50,7 +50,7 @@ class GradesController extends Controller
 
         return Inertia::render('grades/Student', [
             'student' => $student,
-            'class' => $class,
+            'myclass' => $class,
             // 'grades' => $grades,
         ]);
     }
@@ -68,7 +68,39 @@ class GradesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'student_id' => 'required|exists:users,id',
+            'my_class_id' => 'required|exists:my_classes,id',
+            'termGrade' => 'nullable|integer|min:0|max:20',
+            'examGrade' => 'nullable|integer|min:0|max:20',
+        ]);
+
+        $byId = auth()->id();
+
+        //dd($request->student_id);
+        // Save term grade if not empty
+        if (!is_null($request->termGrade)) {
+            grades::create([
+                'grade' => $request->termGrade,
+                'type' => 'td',
+                'student_id' => $request->student_id,
+                'by_id' => $byId,
+                'my_class_id' => $request->my_class_id,
+            ]);
+        }
+
+        // Save exam grade if not empty
+        if (!is_null($request->examGrade)) {
+            grades::create([
+                'grade' => $request->examGrade,
+                'type' => 'exam',
+                'student_id' => $request->student_id,
+                'by_id' => $byId,
+                'my_class_id' => $request->my_class_id,
+            ]);
+        }
+
+        return back()->with('success', 'Grades saved successfully.');
     }
 
     /**

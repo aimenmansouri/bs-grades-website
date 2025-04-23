@@ -6,7 +6,8 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
-import { toast } from "sonner"
+import { router } from '@inertiajs/react';
+import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -28,18 +29,24 @@ interface ClassData {
 
 interface StudentPageProps {
     student: Student;
-    class: ClassData;
+    myclass: ClassData;
 }
 
-export default function Student({ student, class: classData }: StudentPageProps) {
+export default function Student({ student, myclass }: StudentPageProps) {
     const [termGrade, setTermGrade] = useState('');
     const [examGrade, setExamGrade] = useState('');
 
     const handleSaveGrades = () => {
-        toast("Event has been created.")
+        const data = {
+            termGrade: termGrade || null,
+            examGrade: examGrade || null,
+            student_id: student.id,
+            my_class_id: myclass.id,
+        };
+        console.log(data);
+        router.post(route("dashboard.grades.store") , data);
 
-        console.log('Saving grades:', { termGrade, examGrade });
-        // You would typically use Inertia.post here to submit to your backend
+        toast("grades saved");
     };
 
     return (
@@ -53,7 +60,7 @@ export default function Student({ student, class: classData }: StudentPageProps)
                             <CardHeader>
                                 <CardTitle className="text-2xl">Student Information</CardTitle>
                                 <CardDescription>
-                                    View and manage grades for {student.name} in {classData.name} class
+                                    View and manage grades for {student.name} in {myclass.name} class
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>

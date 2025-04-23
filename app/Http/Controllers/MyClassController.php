@@ -95,7 +95,6 @@ class MyClassController extends Controller
         $student = User::findOrFail($studentId);
         
         $student->classes()->sync($request->class_ids);
-        dd($request->class_ids);
 
         return redirect()->back()->with(['message' => 'Student classes updated successfully']);
     }

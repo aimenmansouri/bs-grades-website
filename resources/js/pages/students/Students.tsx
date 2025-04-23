@@ -6,7 +6,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 
 import { router } from '@inertiajs/react';
-import { useState , useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { toast } from 'sonner';
 const breadcrumbs: BreadcrumbItem[] = [
@@ -42,7 +42,7 @@ export default function Students({ students = [], classes = [] }) {
         router.post(route('student.update.classes', studentId), {
             class_ids: selectedClasses[studentId] || [],
         });
-        toast("new classes saved.")
+        toast('new classes saved.');
     };
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
