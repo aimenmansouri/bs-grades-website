@@ -10,8 +10,9 @@ class grades extends Model
     protected $fillable = [
         'grade',
         'type',
-        'user_id',
-        'role',
+        'student_id',
+        'by_id',
+        'my_class_id',
     ];
 
     public function class(): BelongsTo
