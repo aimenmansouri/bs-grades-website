@@ -1,12 +1,12 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { useState } from 'react';
-import { router } from '@inertiajs/react';
 import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -27,12 +27,33 @@ interface ClassData {
     code: string;
 }
 
+interface GradeData {
+    id: number;
+    grade: number;
+    type: 'term' | 'exam';
+    student_id: number;
+    by_id: number;
+    my_class_id: number;
+    by: Student;
+    class: ClassData;
+    created_at: string;
+    updated_at: string;
+}
 interface StudentPageProps {
     student: Student;
     myclass: ClassData;
+    grades: GradeData[];
 }
-
-export default function Student({ student, myclass }: StudentPageProps) {
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+    });
+};
+export default function Student({ student, myclass, grades }: StudentPageProps) {
+    console.log(grades);
     const [termGrade, setTermGrade] = useState('');
     const [examGrade, setExamGrade] = useState('');
 
@@ -44,9 +65,9 @@ export default function Student({ student, myclass }: StudentPageProps) {
             my_class_id: myclass.id,
         };
         console.log(data);
-        router.post(route("dashboard.grades.store") , data);
+        router.post(route('dashboard.grades.store'), data);
 
-        toast("grades saved");
+        toast('grades saved');
     };
 
     return (
@@ -55,7 +76,7 @@ export default function Student({ student, myclass }: StudentPageProps) {
                 <Head title={`${student.name} Grades`} />
 
                 <div className="py-12">
-                    <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
                         <Card>
                             <CardHeader>
                                 <CardTitle className="text-2xl">Student Information</CardTitle>
@@ -125,8 +146,56 @@ export default function Student({ student, myclass }: StudentPageProps) {
                                 </div>
                             </CardContent>
                         </Card>
+                        <Card className="w-full">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-xl font-bold">Student Grades</CardTitle>
+
+                    </CardHeader>
+                    <CardContent>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>ID</TableHead>
+                                    <TableHead>Grade</TableHead>
+                                    <TableHead>Type</TableHead>
+                                    <TableHead>Class</TableHead>
+                                    <TableHead>Added By</TableHead>
+                                    <TableHead>Date</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {grades.map((grade) => (
+                                    <TableRow key={grade.id}>
+                                        <TableCell className="font-medium">{grade.id}</TableCell>
+                                        <TableCell>
+                                            <Badge
+                                                className={
+                                                    grade.grade >= 16
+                                                        ? 'bg-green-500'
+                                                        : grade.grade >= 14
+                                                          ? 'bg-blue-500'
+                                                          : grade.grade >= 10
+                                                            ? 'bg-yellow-500'
+                                                            : 'bg-red-500'
+                                                }
+                                            >
+                                                {grade.grade}/20
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell className="capitalize">{grade.type}</TableCell>
+                                        <TableCell>{grade.class.code}</TableCell>
+                                        <TableCell>{grade.by.name}</TableCell>
+                                        <TableCell>{formatDate(grade.created_at)}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
                     </div>
+                    
                 </div>
+                
             </div>
         </AppLayout>
     );

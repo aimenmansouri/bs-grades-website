@@ -44,14 +44,16 @@ class GradesController extends Controller
 
         // You might want to load grades data for this student
         // For example:
-        // $grades = Grade::where('student_id', $studentId)
-        //     ->where('class_id', $class->id)
-        //     ->get();
+        $grades = grades::with(['by', 'class'])
+            ->where('student_id', $studentId)
+            ->where('my_class_id', $class->id)
+            ->get();
+
 
         return Inertia::render('grades/Student', [
             'student' => $student,
             'myclass' => $class,
-            // 'grades' => $grades,
+            'grades' => $grades,
         ]);
     }
 
