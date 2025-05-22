@@ -7,12 +7,19 @@ use Illuminate\Http\Request;
 use App\Models\my_class;
 use Inertia\Inertia;
 use App\Models\User;
+use App\Services\BlockchainService;
 
 class GradesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    private $blockchain;
+    public function __construct(BlockchainService $blockchain)
+    {
+        $this->blockchain = $blockchain;
+    }
     public function index()
     {
         $classes = my_class::orderBy('year')->get()->groupBy('year');

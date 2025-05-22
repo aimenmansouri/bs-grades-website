@@ -76,7 +76,7 @@ export default function Student({ student, myclass, grades }: StudentPageProps) 
                 <Head title={`${student.name} Grades`} />
 
                 <div className="py-12">
-                    <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
+                    <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
                         <Card>
                             <CardHeader>
                                 <CardTitle className="text-2xl">Student Information</CardTitle>
@@ -147,55 +147,56 @@ export default function Student({ student, myclass, grades }: StudentPageProps) 
                             </CardContent>
                         </Card>
                         <Card className="w-full">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-xl font-bold">Student Grades</CardTitle>
-
-                    </CardHeader>
-                    <CardContent>
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>ID</TableHead>
-                                    <TableHead>Grade</TableHead>
-                                    <TableHead>Type</TableHead>
-                                    <TableHead>Class</TableHead>
-                                    <TableHead>Added By</TableHead>
-                                    <TableHead>Date</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {grades.map((grade) => (
-                                    <TableRow key={grade.id}>
-                                        <TableCell className="font-medium">{grade.id}</TableCell>
-                                        <TableCell>
-                                            <Badge
-                                                className={
-                                                    grade.grade >= 16
-                                                        ? 'bg-green-500'
-                                                        : grade.grade >= 14
-                                                          ? 'bg-blue-500'
-                                                          : grade.grade >= 10
-                                                            ? 'bg-yellow-500'
-                                                            : 'bg-red-500'
-                                                }
-                                            >
-                                                {grade.grade}/20
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="capitalize">{grade.type}</TableCell>
-                                        <TableCell>{grade.class.code}</TableCell>
-                                        <TableCell>{grade.by.name}</TableCell>
-                                        <TableCell>{formatDate(grade.created_at)}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </CardContent>
-                </Card>
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                <CardTitle className="text-xl font-bold">Student Grades</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>ID</TableHead>
+                                            <TableHead>Grade</TableHead>
+                                            <TableHead>Type</TableHead>
+                                            <TableHead>Class</TableHead>
+                                            <TableHead>Added By</TableHead>
+                                            <TableHead>Date</TableHead>
+                                            <TableHead>Action</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {grades.map((grade) => (
+                                            <TableRow key={grade.id}>
+                                                <TableCell className="font-medium">{grade.id}</TableCell>
+                                                <TableCell>
+                                                    <Badge
+                                                        className={
+                                                            grade.grade >= 16
+                                                                ? 'bg-green-500'
+                                                                : grade.grade >= 14
+                                                                  ? 'bg-blue-500'
+                                                                  : grade.grade >= 10
+                                                                    ? 'bg-yellow-500'
+                                                                    : 'bg-red-500'
+                                                        }
+                                                    >
+                                                        {grade.grade}/20
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell className="capitalize">{grade.type}</TableCell>
+                                                <TableCell>{grade.class.code}</TableCell>
+                                                <TableCell>{grade.by.name}</TableCell>
+                                                <TableCell>{formatDate(grade.created_at)}</TableCell>
+                                                <TableCell>
+                                                    <Button>Verify</Button>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </CardContent>
+                        </Card>
                     </div>
-                    
                 </div>
-                
             </div>
         </AppLayout>
     );
